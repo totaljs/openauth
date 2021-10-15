@@ -45,7 +45,7 @@ exports.make = function() {
 						model.email = profile.email;
 						model.gender = (profile.gender ? profile.gender.toLowerCase() : '');
 						model.response = profile;
-						model.picture = profile.picture && profile.picture.data ? profile.picture.data.url : '';
+						model.photo = profile.picture && profile.picture.data ? profile.picture.data.url : '';
 						model.access_token = response.access_token;
 						model.expire = NOW.add(response.expires_in + ' seconds');
 						callback(null, model);
