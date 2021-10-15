@@ -138,7 +138,7 @@ function callback(type) {
 function sessions() {
 
 	var $ = this;
-	var sessionid = $.query.id;
+	var sessionid = $.query.id || $.query.sessionid;
 
 	if (sessionid) {
 		for (var key in MAIN.sessions) {
