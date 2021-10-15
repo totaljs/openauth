@@ -8,7 +8,7 @@ NEWSCHEMA('Login', function(schema) {
 		var id = Date.now().toString(36) + GUID(10);
 		model.id = id;
 		model.token = $.user.token;
-		model.expire = NOW.add('5 minutes');
+		model.expire = NOW.add('15 minutes');
 		model.redirecturl = $.controller.hostname('/oauth/' + model.serviceid + '/');
 		MAIN.sessions[id] = model;
 		$.callback($.controller.hostname('/login/' + id + '/'));
