@@ -18,7 +18,7 @@ OpenSocial uses [Total.js Extensions](https://docs.totaljs.com/extensions/) for 
 - VKontakte (premium)
 - Yandex (premium)
 
-< If you want to use our __Premium extensions__, contact us: <info@totaljs.com> or <https://www.totaljs.com/support/>
+> If you want to use our __Premium extensions__, contact us: <info@totaljs.com> or <https://www.totaljs.com/support/>
 
 ---
 
