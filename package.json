@@ -1,0 +1,21 @@
+{
+  "name": "OpenSocial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/totaljs/opensocial"
+  },
+  "dependencies": {
+    "total4": "latest"
+  },
+  "scripts": {
+    "start": "node index.js 8000"
+  },
+  "keywords": [
+    "synchronization",
+    "proxy"
+  ],
+  "author": "Peter Širka",
+  "license":"MIT"
+}

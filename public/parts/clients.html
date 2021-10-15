@@ -1,0 +1,65 @@
+<div data-scope="~PATH~" class="~PATH~">
+	<header>
+		<label><i class="fa fa-plug"></i>@(Online clients)</label>
+	</header>
+	<div data---="viewbox__common.page__parent:auto;margin:110;scrollbar:1;visibleY:0" class="invisible">
+		<div class="padding">
+			<div class="listing2" data-bind="?__template__changed">
+				<script type="text/html">
+					{{ if value && value.length }}
+						{{ foreach m in value }}
+							<figure>
+								<section class="exec2" data-exec2="?/show">
+									<div class="b"><i class="fas fa-laptop mr5"></i>{{ m.ip }}</div>
+									<div class="mt5">
+										<div class="keyvalue small">
+											<span>@(Access token)</span>
+											<div><span class="token b monospace" data-backup="{{ m.token }}">***********************</span></div>
+										</div>
+										<div class="keyvalue small">
+											<span>@(Latency)</span>
+											<div>{{ m.latency | empty }} ms</div>
+										</div>
+										<div class="keyvalue small">
+											<span>@(Connected)</span>
+											<div>{{ m.dtconnected | format('[ts]') }}</div>
+										</div>
+									</div>
+								</section>
+							</figure>
+						{{ end }}
+					{{ else }}
+						<div class="empty">
+							<i class="fa fa-database"></i>
+							<div>@(Without clients)</div>
+							<summary>@(The app does not contain any connected clients)</summary>
+						</div>
+					{{ fi }}
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	PLUGIN('~PATH~', function(exports) {
+
+		exports.refresh = function() {
+			WAPI('clients', '?');
+		};
+
+		exports.show = function(el) {
+			el = el.find('.token');
+			var current = el.text();
+			var old = el.attrd('backup');
+			el.attrd('backup', current);
+			el.text(old)
+		};
+
+		exports.init = function() {
+			REPEAT('common.page==="{0}"'.format(exports.name), exports.refresh, 30000, true);
+		};
+
+	});
+</script>
