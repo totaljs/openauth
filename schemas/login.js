@@ -5,6 +5,31 @@ NEWSCHEMA('Login', function(schema) {
 	schema.define('url', String);              // optional, redirect URL
 
 	schema.addWorkflow('exec', function($, model) {
+
+
+		var service = MAIN.oauth[model.serviceid];
+		if (!service) {
+			$.invalid('@(Service not found)');
+			return;
+		}
+
+		if (service) {
+
+			var is = true;
+			for (var item of service.configuration) {
+				if (item.required && !service.config[item.name]) {
+					is = false;
+					break;
+				}
+			}
+
+			if (!is) {
+				$.invalid('@(Service is not configured)');
+				return;
+			}
+		}
+
+
 		var id = Date.now().toString(36) + GUID(10);
 		model.id = id;
 		model.token = $.user.token;
