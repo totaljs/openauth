@@ -10,6 +10,13 @@ exports.install = function() {
 	ROUTE('GET      /oauth/{id}/', callback);
 	ROUTE('POST     /oauth/{id}/', callback);
 	ROUTE('GET      /oauth/{id}/remove/', remove);
+
+	ROUTE('+GET /test/', function() {
+		var self = this;
+		EXEC('+Login --> exec', { sessionid: '123456', serviceid: 'apple' }, function(err, response) {
+			self.redirect(response);
+		}, self);
+	});
 };
 
 function index() {
@@ -54,6 +61,15 @@ function socket() {
 			}
 			msg.error = 'Session not found';
 			msg.status = 404;
+			client.send(msg);
+		} else if (msg.type === 'sessions') {
+			var arr = [];
+			for (var key in MAIN.sessions) {
+				var session = MAIN.sessions[key];
+				if (session.response)
+					arr.push(session.response);
+			}
+			msg.response = arr;
 			client.send(msg);
 		}
 	});
@@ -138,7 +154,7 @@ function callback(type) {
 function sessions() {
 
 	var $ = this;
-	var sessionid = $.query.id;
+	var sessionid = $.query.id || $.query.sessionid;
 
 	if (sessionid) {
 		for (var key in MAIN.sessions) {

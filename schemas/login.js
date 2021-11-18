@@ -6,7 +6,6 @@ NEWSCHEMA('Login', function(schema) {
 
 	schema.addWorkflow('exec', function($, model) {
 
-
 		var service = MAIN.oauth[model.serviceid];
 		if (!service) {
 			$.invalid('@(Service not found)');
@@ -16,7 +15,6 @@ NEWSCHEMA('Login', function(schema) {
 		if (service) {
 
 			var is = true;
-
 			if (service.configuration) {
 				for (var item of service.configuration) {
 					if (item.required && !service.config[item.name]) {
