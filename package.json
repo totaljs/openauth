@@ -1,10 +1,10 @@
 {
-  "name": "OpenSocial",
+  "name": "OpenAuth",
   "version": "1.0.0",
   "main": "index.js",
   "repository": {
       "type": "git",
-      "url": "https://github.com/totaljs/opensocial"
+      "url": "https://github.com/totaljs/openauth"
   },
   "dependencies": {
     "total4": "latest"
@@ -13,8 +13,9 @@
     "start": "node index.js 8000"
   },
   "keywords": [
-    "synchronization",
-    "proxy"
+    "oauth2",
+    "auth",
+    "sso"
   ],
   "author": "Peter Širka",
   "license":"MIT"

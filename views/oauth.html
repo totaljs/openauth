@@ -16,7 +16,7 @@
 			var href = location.href;
 			var index = href.indexOf('?');
 			var code = '@{model.code}';
-			location.href = (index === -1 ? (href + '?opensocial=1') : ((href.substring(0, index + 1) + 'opensocial=1&' + href.substring(index + 1)))) + (code ? ('&code=' + code) : '');
+			location.href = (index === -1 ? (href + '?openauth=1') : ((href.substring(0, index + 1) + 'openauth=1&' + href.substring(index + 1)))) + (code ? ('&code=' + code) : '');
 		}, 500);
 	</script>
 

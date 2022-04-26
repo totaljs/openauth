@@ -21,7 +21,7 @@ exports.install = function() {
 
 function index() {
 	if (PREF.token)
-		this.plain('OpenSocial v' + MAIN.version);
+		this.plain('OpenAuth v' + MAIN.version);
 	else
 		this.redirect('/setup/');
 }
@@ -31,7 +31,7 @@ function socket() {
 	var self = this;
 
 	self.sendmeta = function(client) {
-		var msg = { type: 'init', name: PREF.name, version: MAIN.version, id: 'OpenSocial' };
+		var msg = { type: 'init', name: PREF.name, version: MAIN.version, id: 'OpenAuth' };
 		if (client)
 			client.send(msg);
 		else
@@ -105,7 +105,7 @@ function callback(type) {
 	var $ = this;
 	var ssid = $.query.state || $.body.state;
 
-	if (!$.query.opensocial && !ssid) {
+	if (!$.query.openauth && !ssid) {
 		$.view('oauth', $.body);
 		return;
 	}

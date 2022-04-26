@@ -1,13 +1,13 @@
-# OpenSocial
+# OpenAuth
 
-__OpenSocial__ is a lightweight OAuth 2.0 integrator server that can obtain a user-profile from e.g. Facebook, Google, Apple, etc.. Moreover, the project is without any 3rd party dependencies with low hardware requirements.
+__OpenAuth__ is a lightweight OAuth 2.0 integrator server that can obtain a user-profile from e.g. Facebook, Google, Apple, etc.. Moreover, the project is without any 3rd party dependencies with low hardware requirements.
 
-- [Documentation](https://docs.totaljs.com/opensocial/)
+- [Documentation](https://docs.totaljs.com/openauth/)
 - MIT license
 
 ## Extensions
 
-OpenSocial uses [Total.js Extensions](https://docs.totaljs.com/extensions/) for processing OAuth 2.0 data. We have prepared several extensions:
+OpenAuth uses [Total.js Extensions](https://docs.totaljs.com/extensions/) for processing OAuth 2.0 data. We have prepared several extensions:
 
 - Facebook
 - Google (premium)
@@ -22,7 +22,6 @@ OpenSocial uses [Total.js Extensions](https://docs.totaljs.com/extensions/) for 
 
 ---
 
-- [Website](https://www.totaljs.com/opensocial/)
 - [Chat support](https://platform.totaljs.com/?open=messenger)
 - [Join __Total.js Telegram__](https://t.me/totalplatform)
 - [Support](https://www.totaljs.com/support/)
