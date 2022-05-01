@@ -13,7 +13,6 @@ jobs:
         with:
           repository: 'totaljs/openauth'
           ref: 'main'
-          token: ${{ secrets.ACCESS_TOKEN }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
