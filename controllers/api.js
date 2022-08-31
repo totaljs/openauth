@@ -10,13 +10,6 @@ exports.install = function() {
 	ROUTE('GET      /oauth/{id}/', callback);
 	ROUTE('POST     /oauth/{id}/', callback);
 	ROUTE('GET      /oauth/{id}/remove/', remove);
-
-	ROUTE('+GET /test/', function() {
-		var self = this;
-		EXEC('+Login --> exec', { sessionid: '123456', serviceid: 'apple' }, function(err, response) {
-			self.redirect(response);
-		}, self);
-	});
 };
 
 function index() {
