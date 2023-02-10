@@ -126,7 +126,7 @@ function callback(type) {
 				CONF.allow_tms && F.tms.publish_cache.login && F.tms.publishers.login && PUBLISH('login', response);
 
 				if (session.url) {
-					session.url += (session.url.indexOf('?') === -1 ? '?' : '&') + 'sessionid=' + ssid;
+					session.url += (session.url.indexOf('?') === -1 ? '?' : '&') + 'sessionid=' + response.sessionid;
 					$.redirect(session.url);
 				} else {
 					MAIN.socket && MAIN.socket.send({ type: 'profile', serviceid: session.serviceid, sessionid: session.sessionid, data: response });

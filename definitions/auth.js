@@ -13,7 +13,7 @@ AUTH(function($) {
 	if (!PREF.disconnected && ((!PREF.token && $.path[0] !== '/') || PREF.token === token)) {
 		$.success({ token: PREF.token, sa: true });
 		return;
-	} else if ($.path[0] === '/' || ($.path[0] && $.websocket)) {
+	} else if ($.path[0] === '/' || $.path[0] === 'sessions' || ($.path[0] && $.websocket)) {
 		var session = MAIN.tokens[token];
 		if (session) {
 			$.success(session);
