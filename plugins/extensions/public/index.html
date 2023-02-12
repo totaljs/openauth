@@ -1,0 +1,149 @@
+<style>
+	.CLASS .listing2 { column-gap: 7px; }
+	.CLASS .listing2 figure { margin-bottom: 7px; }
+	.CLASS .listing2 figure:hover { filter:brightness(0.9); }
+	.CLASS .controls { border-left: 1px solid rgba(0,0,0,0.1); padding: 0 8px 0 15px; line-height: 40px; height: 40px; }
+	.CLASS .name { padding-top: 1px; }
+	.CLASS .icon { border-right: 1px solid rgba(0,0,0,0.1); margin-right: 8px; padding: 0; text-align: center; float: left; line-height: 40px; height: 40px; font-size: 20px; width: 40px; border-radius: var(--radius); color: #FFF; }
+</style>
+
+<ui-plugin config="aclass:1">
+
+	<header>
+		<label><i class="ti ti-layer-plus"></i>@(Extensions)</label>
+		<div class="toolbar">
+			<button class="exec" data-exec="?/importer"><i class="ti ti-cloud-upload"></i>@(Import)</button>
+			<button class="exec" data-exec="?/logs"><i class="ti ti-history"></i>@(Logs)</button>
+			<button class="exec" data-exec="?/refresh"><i class="ti ti-refresh"></i>@(Refresh)</button>
+		</div>
+	</header>
+
+	<ui-component name="viewbox" config="parent:auto;margin:60" class="invisible">
+		<ui-component name="empty" path="?.items" config="parent:auto;margin:0">
+
+			<script type="text/html">
+				<div>@(The app doesn't contain any extensions)</div>
+				<div class="mt5">
+					<span class="link exec" data-exec="?/importer"><i class="ti ti-cloud-upload green mr5"></i>@(Import first)</span>
+				</div>
+			</script>
+
+			<div class="padding">
+				<div class="m">
+					<div style="max-width:250px;width:100%">
+						<ui-component name="searchinput" path="?.search" config="autofocus:1;placeholder:@(Search)"></ui-component>
+					</div>
+				</div>
+				<div style="height:5px"></div>
+				<ui-component name="search" path="?.search" config="selector:figure;datasource:?.list">
+					<ui-bind path="?.items" config="template:figure" class="grid-4 grid-sm-2 grid-xs-1 listing2">
+						<script type="text/html">
+							{{ foreach m in value }}
+								<figure class="exec" data-exec="?/settings" data-id="{{ m.id }}" data-search="{{ m.name }}">
+									<section>
+										<div class="pull-right controls">
+											<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
+										</div>
+										<div class="icon" style="background:{{ m.id | color }}">
+											<i class="{{ m.icon }}"></i>
+										</div>
+										<div class="name">{{ m.name }}</div>
+										<div class="fs12 gray">{{ m.summary }}</div>
+									</section>
+								</figure>
+							{{ end }}
+						</script>
+					</ui-bind>
+				</ui-component>
+			</div>
+		</ui-component>
+
+	</ui-component>
+
+</ui-plugin>
+
+<ui-component name="importer" path="common.form" config="if:formconfig;url:@{#}/~ID~/forms/config.html"></ui-component>
+<ui-component name="importer" path="common.form" config="if:formlogs;url:@{#}/~ID~/forms/logs.html"></ui-component>
+
+<script>
+	PLUGIN(function(exports) {
+
+		exports.reload = function() {
+			exports.refresh();
+		};
+
+		exports.options = function(el) {
+			var model = exports.model;
+			var id = ATTRD(el);
+			var profile = model.items.findItem('id', id);
+
+			var opt = {};
+			opt.items = [];
+
+			opt.items.push({ id: 'settings', name: '@(Configure)', icon: 'ti ti-cog' });
+			opt.items.push({ id: 'download', name: '@(Download)', icon: 'ti ti-download' });
+			opt.items.push('-');
+			opt.items.push({ id: 'remove', name: '@(Remove)', icon: 'ti ti-trash red' });
+
+			opt.align = 'right';
+			opt.position = 'top';
+			opt.element = el;
+			opt.callback = function(selected) {
+				switch (selected.id) {
+					case 'download':
+					case 'settings':
+						exports[selected.id](id);
+						break;
+					case 'remove':
+						EXEC('-approve/show', '@(Are you sure you want to remove selected extension?)', '"ti ti-trash" @(Remove)', function() {
+							exports.tapi('extensions_remove/{0} @showloading ERROR'.format(id), function() {
+								exports.refresh();
+								EXEC('-notify/success @hideloading', '@(The extension has been removed successfully.)');
+							});
+						});
+						break;
+				}
+
+			};
+			SETTER('menu', 'show', opt);
+		};
+
+		exports.settings = function(el) {
+			var id = ATTRD(el);
+			exports.tapi('extensions_config_read/{0} ERROR'.format(id), function(response) {
+				response.readme = response.readme.format(location.origin);
+				SET('formconfig @reset', response);
+				SET('common.form', 'formconfig');
+			});
+		};
+
+		exports.logs = function() {
+			SET('common.form', 'formlogs');
+		};
+
+		exports.importer = function() {
+			var opt = {};
+			opt.accept = 'text/javascript';
+			opt.callback = function(file) {
+				exports.tapi('extensions_save ERROR', { body: file.body }, function(response) {
+					SETTER('notify/success', '@(The extension <b>{value}</b> has been imported successfully.)'.args(response, 'escape'));
+					exports.refresh();
+				});
+			};
+			SETTER('filereader/open', opt);
+		};
+
+		exports.download = function(el) {
+			var id = ATTRD(el);
+			exports.tapi('extensions_download/{0} ERROR'.format(id), function(response) {
+				SETTER('filesaver/save', id + '.js', response.value);
+			});
+		};
+
+		exports.refresh = function() {
+			exports.tapi('extensions ERROR', 'items');
+		};
+
+	});
+
+</script>

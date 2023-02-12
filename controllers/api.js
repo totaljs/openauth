@@ -1,73 +1,22 @@
 exports.install = function() {
 
-	ROUTE('GET      /', index);
-	ROUTE('+SOCKET  /', socket, 1024);
-	ROUTE('+POST    / *Login --> exec');
-	ROUTE('+GET     /sessions/', sessions);
-
 	// OAuth 2
 	ROUTE('GET      /login/{id}/', login);
 	ROUTE('GET      /oauth/{id}/', callback);
 	ROUTE('POST     /oauth/{id}/', callback);
 	ROUTE('GET      /oauth/{id}/remove/', remove);
+	ROUTE('+GET     /sessions/', sessions);
+	ROUTE('+POST    / *Extensions --> login');
+
+	// Index
+	ROUTE('GET /', index);
 };
 
 function index() {
-	if (PREF.token)
-		this.plain('OpenAuth v' + MAIN.version);
+	if (CONF.token)
+		this.plain(CONF.name);
 	else
 		this.redirect('/setup/');
-}
-
-function socket() {
-
-	var self = this;
-
-	self.sendmeta = function(client) {
-		var msg = { type: 'init', name: PREF.name, version: MAIN.version, id: 'OpenAuth' };
-		if (client)
-			client.send(msg);
-		else
-			self.send(msg);
-	};
-
-	self.on('open', function(client) {
-		client.dtconnected = new Date();
-		self.sendmeta(client);
-	});
-
-	self.on('message', function(client, msg) {
-		if (msg.type === 'login') {
-			EXEC('+Login --> exec', msg.data, function(err, response) {
-				msg.error = err;
-				msg.response = response;
-				msg.data = undefined;
-				client.send(msg);
-			}, client);
-		} else if (msg.type === 'session') {
-			for (var key in MAIN.sessions) {
-				if (MAIN.sessions[key].sessionid === (msg.id || msg.sessionid)) {
-					msg.response = MAIN.sessions[key].response;
-					client.send(msg);
-					return;
-				}
-			}
-			msg.error = 'Session not found';
-			msg.status = 404;
-			client.send(msg);
-		} else if (msg.type === 'sessions') {
-			var arr = [];
-			for (var key in MAIN.sessions) {
-				var session = MAIN.sessions[key];
-				if (session.response)
-					arr.push(session.response);
-			}
-			msg.response = arr;
-			client.send(msg);
-		}
-	});
-
-	MAIN.socket = self;
 }
 
 function login(id) {
@@ -118,21 +67,17 @@ function callback(type) {
 					return;
 				}
 
+				DB().insert('nosql/logs', { id: response.id, serviceid: session.serviceid, sessionid: session.sessionid, name: response.name, email: response.email, expire: response.expire, dtcreated: new Date() });
+
 				response.sessionid = session.sessionid;
 				response.serviceid = session.serviceid;
 				session.response = response;
 
-				F.$events.login && EMIT('login', response);
-				CONF.allow_tms && F.tms.publish_cache.login && F.tms.publishers.login && PUBLISH('login', response);
-
 				if (session.url) {
 					session.url += (session.url.indexOf('?') === -1 ? '?' : '&') + 'sessionid=' + response.sessionid;
 					$.redirect(session.url);
-				} else {
-					MAIN.socket && MAIN.socket.send({ type: 'profile', serviceid: session.serviceid, sessionid: session.sessionid, data: response });
+				} else
 					$.view('close');
-				}
-
 			});
 		} else {
 			$.status = 404;

@@ -1,0 +1,43 @@
+<ui-component name="box" path="common.form" config="if:~PATH~;icon:ti ti-history;title:@(Logs);autofocus:true;reload:?/reload;closeesc:1;scrollbar:0;submit:?/submit;width:1300" class="hidden ~PATH~" plugin="~PATH~">
+	<div style="border-bottom:1px solid #E0E0E0">
+		<ui-component name="datagrid" path="?.grid" config="exec:?/filter;height:.ui-box-body;noborder:1;margin:1;checkbox:0">
+			<script type="text/html">
+				[
+					{ name: 'id', text: '@(ID)', hide: true },
+					{ name: 'serviceid', text: '@(Service)', width: 180 },
+					{ name: 'sessionid', text: '@(Session)', width: 180, monospace: 1 },
+					{ name: 'name', text: '@(Name)', width: 250 },
+					{ name: 'email', text: '@(Email)', width: 250 },
+					{ name: 'dtcreated', text: '@(Created)', format: '[ts]', type: 'date', width: 150 }
+				]
+			</script>
+		</ui-component>
+	</div>
+	<nav>
+		<button name="cancel" style="width:100%">@(Close)</button>
+	</nav>
+</ui-component>
+
+<script>
+
+	PLUGIN(function(exports) {
+
+		exports.reload = function(com) {
+			exports.refresh();
+		};
+
+		exports.refresh = function() {
+			exports.nul('grid');
+		};
+
+		exports.filter = function(type, filter, sort, page) {
+			if (!filter)
+				filter = {};
+			filter.sort = sort;
+			filter.page = page;
+			exports.tapi(QUERIFY('extensions_logs', filter) + ' ERROR', 'grid');
+		};
+
+	});
+
+</script>

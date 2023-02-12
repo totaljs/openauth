@@ -1,0 +1,42 @@
+<ui-component name="box" path="common.form" config="if:~PATH~;icon:ti ti-cog;autofocus:true;scrollbar:1;reload:?/reload;submit:?/submit;width:800" class="hidden ~PATH~" plugin="~PATH~">
+	<div class="padding">
+		<div class="panel m">
+			<label class="bg-smoke"><i class="ti ti-reader"></i>@(Documentation)</label>
+			<div class="padding markdown-small">
+				<ui-component name="markdownpreview" path="?.readme"></ui-component>
+			</div>
+		</div>
+		<ui-component name="configuration" path="?.config" config="datasource:?.configuration"></ui-component>
+	</div>
+	<nav>
+		<ui-component name="validate" path="?">
+			<button name="submit" disabled><i class="ti ti-check-circle"></i>@(SUBMIT)</button>
+			<button name="cancel">@(Cancel)</button>
+		</ui-component>
+	</nav>
+</ui-component>
+
+<script>
+
+	PLUGIN(function(exports) {
+
+		exports.reload = function(com) {
+			var model = exports.model;
+			var id = model ? model.id : null;
+			com.reconfigure({ title: '@(Configuration:) ' + model.name });
+		};
+
+		exports.submit = function(hide) {
+			var model = exports.form;
+			var data = {};
+			data.id = model.id;
+			data.data = model.config;
+			exports.tapi('extensions_config_save ERROR', data, function() {
+				hide();
+				SETTER('message/success', '@(The configuration has been updated successfully.)');
+			});
+		};
+
+	});
+
+</script>

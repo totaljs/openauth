@@ -1,1 +1,0 @@
-NEWPUBLISH('login', 'sessionid:string, serviceid:string, id:string, nick:string, name:string, photo:string, firstname:string, lastname:string, email:string, phone:string, token:string, response:object, expire:date');
