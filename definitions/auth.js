@@ -38,6 +38,10 @@ AUTH(function($) {
 	var item = MAIN.db.tokens.findItem('token', token);
 	if (item) {
 		$.success(item);
+
+		if (DDOS[$.ip])
+			delete DDOS[$.ip];
+
 		return;
 	}
 
