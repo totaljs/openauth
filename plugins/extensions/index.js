@@ -16,5 +16,6 @@ exports.install = function() {
 	ROUTE('+API    /api/    -extensions_config_read/{id}    *Extensions/Config   --> read');
 	ROUTE('+API    /api/    +extensions_config_save         *Extensions/Config   --> save');
 	ROUTE('+API    /api/    -extensions_logs                *Extensions          --> logs');
+	ROUTE('+API    /api/    -extensions_sessions            *Extensions          --> sessions');
 
 };

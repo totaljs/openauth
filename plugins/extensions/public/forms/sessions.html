@@ -1,17 +1,16 @@
-<ui-component name="box" path="common.form" config="if:~PATH~;icon:ti ti-history;title:@(Logs);autofocus:true;reload:?/reload;closeesc:1;scrollbar:0;submit:?/submit;width:1300" class="hidden ~PATH~" plugin="~PATH~">
+<ui-component name="box" path="common.form" config="if:~PATH~;icon:ti ti-users;title:@(Open sessions);reload:?/reload;closeesc:1;scrollbar:0;submit:?/submit;width:1300" class="hidden ~PATH~" plugin="~PATH~">
 	<nav>
 		<button class="exec" data-exec="?/refresh"><i class="ti ti-refresh"></i>@(Refresh)</button>
 	</nav>
 	<div style="border-bottom:1px solid #E0E0E0">
-		<ui-component name="datagrid" path="?.grid" config="exec:?/filter;height:.ui-box-body;noborder:1;margin:1;checkbox:0">
+		<ui-component name="datagrid" path="?.items" config="height:.ui-box-body;noborder:1;margin:1;checkbox:0">
 			<script type="text/html">
 				[
-					{ name: 'id', text: '@(ID)', hide: true },
 					{ name: 'serviceid', text: '@(Service)', width: 180 },
-					{ name: 'sessionid', text: '@(Session)', width: 180, monospace: 1 },
+					{ name: 'id', text: '@(Session)', width: 180, monospace: 1 },
 					{ name: 'name', text: '@(Name)', width: 250 },
 					{ name: 'email', text: '@(Email)', width: 250 },
-					{ name: 'dtcreated', text: '@(Created)', format: '[ts]', type: 'date', width: 150 }
+					{ name: 'expire', text: '@(Expire)', format: '[ts]', type: 'date', width: 150 }
 				]
 			</script>
 		</ui-component>
@@ -30,7 +29,7 @@
 		};
 
 		exports.refresh = function() {
-			exports.nul('grid');
+			exports.tapi('extensions_sessions', '?.items');
 		};
 
 		exports.filter = function(type, filter, sort, page) {

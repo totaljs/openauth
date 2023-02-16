@@ -14,6 +14,7 @@
 		<div class="toolbar">
 			<button class="exec" data-exec="?/importer"><i class="ti ti-cloud-upload"></i>@(Import)</button>
 			<button class="exec" data-exec="?/logs"><i class="ti ti-history"></i>@(Logs)</button>
+			<button class="exec" data-exec="?/sessions"><i class="ti ti-users-alt"></i>@(Sessions)</button>
 			<button class="exec" data-exec="?/refresh"><i class="ti ti-refresh"></i>@(Refresh)</button>
 		</div>
 	</header>
@@ -64,6 +65,7 @@
 
 <ui-component name="importer" path="common.form" config="if:formconfig;url:@{#}/~ID~/forms/config.html"></ui-component>
 <ui-component name="importer" path="common.form" config="if:formlogs;url:@{#}/~ID~/forms/logs.html"></ui-component>
+<ui-component name="importer" path="common.form" config="if:formsessions;url:@{#}/~ID~/forms/sessions.html"></ui-component>
 
 <script>
 	PLUGIN(function(exports) {
@@ -119,6 +121,10 @@
 
 		exports.logs = function() {
 			SET('common.form', 'formlogs');
+		};
+
+		exports.sessions = function() {
+			SET('common.form', 'formsessions');
 		};
 
 		exports.importer = function() {

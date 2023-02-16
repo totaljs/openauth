@@ -124,6 +124,20 @@ NEWSCHEMA('Extensions', function(schema) {
 		}
 	});
 
+	schema.action('sessions', {
+		name: 'Online sessions',
+		permissions: 'profiles',
+		action: function($) {
+			var arr = [];
+			for (var key in MAIN.sessions) {
+				var item = MAIN.sessions[key];
+				var response = item.response || EMPTYOBJECT;
+				arr.push({ id: key, serviceid: response.serviceid, profileid: response.id, expire: item.expire, redirecturl: item.redirecturl, name: response.name, email: response.email });
+			}
+			$.callback(arr);
+		}
+	});
+
 	// Auto-load extensions
 	(function() {
 
