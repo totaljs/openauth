@@ -1,10 +1,10 @@
 {
-  "name": "OpenTemplates",
+  "name": "OpenAuth",
   "version": "1.0.0",
   "main": "index.js",
   "repository": {
       "type": "git",
-      "url": "https://github.com/totaljs/opentemplates"
+      "url": "https://github.com/totaljs/openauth"
   },
   "dependencies": {
     "total4": "latest"
@@ -13,9 +13,8 @@
     "start": "node index.js 8000"
   },
   "keywords": [
-    "templates",
-    "pdf",
-    "html"
+    "auth",
+    "oauth2"
   ],
   "author": "Peter Širka",
   "license":"MIT"
