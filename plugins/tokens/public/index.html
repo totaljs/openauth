@@ -110,7 +110,7 @@
 						break;
 					case 'remove':
 						EXEC('-approve/show', '@(Are you sure you want to remove selected token?)', '"ti ti-trash" @(Remove)', function() {
-							exports.tapi('profiles_remove/{0} @showloading ERROR'.format(id), function() {
+							exports.tapi('tokens_remove/{0} @showloading ERROR'.format(id), function() {
 								exports.refresh();
 								EXEC('-notify/success @hideloading', '@(The token has been removed successfully.)');
 							});
