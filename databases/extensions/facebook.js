@@ -9,8 +9,8 @@ exports.readme = `
 - A callback endpoint \`{0}/oauth/facebook/\``;
 
 exports.configuration = [];
-exports.configuration.push({ name: 'id', text: 'App ID', type: 'string', required: true, placeholder: 'Application identifer' });
-exports.configuration.push({ name: 'secret', text: 'Secret', type: 'string', required: true, placeholder: 'A secret key' });
+exports.configuration.push({ id: 'id', name: 'App ID', type: 'string', required: true, placeholder: 'Application identifer' });
+exports.configuration.push({ id: 'secret', name: 'Secret', type: 'string', required: true, placeholder: 'A secret key' });
 
 exports.config = {};
 
