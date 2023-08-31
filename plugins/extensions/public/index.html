@@ -1,6 +1,6 @@
 <style>
-	.CLASS .listing2 { column-gap: 7px; }
-	.CLASS .listing2 figure { margin-bottom: 7px; }
+	.CLASS .listing2 { column-gap: 15px; }
+	.CLASS .listing2 figure { margin-bottom: 15px; }
 	.CLASS .listing2 figure:hover { filter:brightness(0.9); }
 	.CLASS .controls { border-left: 1px solid rgba(0,0,0,0.1); padding: 0 8px 0 15px; line-height: 40px; height: 40px; }
 	.CLASS .name { padding-top: 1px; }
@@ -147,7 +147,10 @@
 		};
 
 		exports.refresh = function() {
-			exports.tapi('extensions ERROR', 'items');
+			exports.tapi('extensions ERROR', function(response) {
+				response.quicksort('name');
+				exports.set('items', response);
+			});
 		};
 
 	});
