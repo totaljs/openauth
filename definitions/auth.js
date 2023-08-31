@@ -35,14 +35,16 @@ AUTH(function($) {
 		return;
 	}
 
-	var item = MAIN.db.tokens.findItem('token', token);
-	if (item) {
-		$.success(item);
+	if (token !== '0') {
+		var item = MAIN.db.tokens.findItem('token', token);
+		if (item) {
+			$.success(item);
 
-		if (DDOS[$.ip])
-			delete DDOS[$.ip];
+			if (DDOS[$.ip])
+				delete DDOS[$.ip];
 
-		return;
+			return;
+		}
 	}
 
 	if (DDOS[$.ip])
